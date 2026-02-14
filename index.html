@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine</title>
+
+<style>
+body{
+    background:black;
+    color:white;
+    font-family:Arial;
+    text-align:center;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+button{
+    padding:15px 25px;
+    font-size:18px;
+    margin:10px;
+    border:none;
+    border-radius:10px;
+}
+
+#yes{background:#ff2d55;color:white;}
+#no{background:gray;color:white;position:relative;}
+
+input{
+    padding:12px;
+    font-size:18px;
+    border-radius:10px;
+    border:none;
+    text-align:center;
+}
+
+#heart{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:70px;
+    animation:beat 1s infinite;
+}
+
+@keyframes beat{
+    0%{transform:translateX(-50%) scale(1);}
+    50%{transform:translateX(-50%) scale(1.3);}
+    100%{transform:translateX(-50%) scale(1);}
+}
+
+.floating{
+    position:fixed;
+    color:#ff2d55;
+    font-size:25px;
+    animation:floatUp 4s linear forwards;
+}
+
+@keyframes floatUp{
+    from{transform:translateY(0);opacity:1;}
+    to{transform:translateY(-600px);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div id="question">
+<h1>Will you be my Valentine? ❤️</h1>
+<button id="yes">Yes</button>
+<button id="no">No</button>
+</div>
+
+<div id="nameBox" style="display:none;">
+<h2>Enter your name</h2>
+<input id="nameInput" placeholder="Your name">
+<br>
+<button onclick="checkName()">Submit</button>
+</div>
+
+<div id="message" style="display:none;">
+<h1 id="finalText"></h1>
+<div id="heart">❤️</div>
+</div>
+
+<script>
+// runaway NO button
+const noBtn = document.getElementById("no");
+noBtn.addEventListener("mouseover", ()=>{
+    const x=Math.random()*300-150;
+    const y=Math.random()*300-150;
+    noBtn.style.transform=`translate(${x}px,${y}px)`;
+});
+
+// YES click
+document.getElementById("yes").onclick=()=>{
+    document.getElementById("question").style.display="none";
+    document.getElementById("nameBox").style.display="block";
+};
+
+function checkName(){
+    const name=document.getElementById("nameInput").value.toLowerCase();
+
+    document.getElementById("nameBox").style.display="none";
+    document.getElementById("message").style.display="block";
+
+    if(name==="alinor"){
+        document.getElementById("finalText").innerHTML=
+        "Alinor ❤️<br>You are my favorite notification, my best moment, and my forever Valentine.<br>I love you.";
+
+        startEffects();
+    }
+    else if(name==="aliya"){
+        document.getElementById("finalText").innerHTML="❌ Incorrect person detected 😭";
+    }
+    else{
+        document.getElementById("finalText").innerHTML="Hmm... wrong person 👀";
+    }
+}
+
+// EFFECTS
+function startEffects(){
+
+    // iPhone vibration
+    if(navigator.vibrate){
+        navigator.vibrate([200,100,200,100,400]);
+    }
+
+    // floating hearts
+    setInterval(()=>{
+        const heart=document.createElement("div");
+        heart.innerHTML="❤️";
+        heart.className="floating";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.bottom="0px";
+        document.body.appendChild(heart);
+
+        setTimeout(()=>heart.remove(),4000);
+    },300);
+
+    // fireworks
+    setInterval(()=>{
+        for(let i=0;i<10;i++){
+            const spark=document.createElement("div");
+            spark.innerHTML="✨";
+            spark.className="floating";
+            spark.style.left=Math.random()*100+"vw";
+            spark.style.bottom=Math.random()*50+"vh";
+            spark.style.fontSize="20px";
+            document.body.appendChild(spark);
+            setTimeout(()=>spark.remove(),3000);
+        }
+    },1200);
+}
+</script>
+
+</body>
+</html>
