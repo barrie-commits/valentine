@@ -97,6 +97,11 @@ noBtn.addEventListener("mouseover", ()=>{
 
 // YES click
 document.getElementById("yes").onclick=()=>{
+    // iPhone vibration triggered by real tap
+    if(navigator.vibrate){
+        navigator.vibrate([200,100,200]);
+    }
+
     document.getElementById("question").style.display="none";
     document.getElementById("nameBox").style.display="block";
 };
@@ -159,3 +164,4 @@ function startEffects(){
 
 </body>
 </html>
+
