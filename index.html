@@ -63,6 +63,33 @@ input{
     from{transform:translateY(0);opacity:1;}
     to{transform:translateY(-600px);opacity:0;}
 }
+
+/* SCREEN SHAKE */
+@keyframes shake {
+  0% { transform: translate(0,0); }
+  20% { transform: translate(-5px,5px); }
+  40% { transform: translate(5px,-5px); }
+  60% { transform: translate(-5px,5px); }
+  80% { transform: translate(5px,-5px); }
+  100% { transform: translate(0,0); }
+}
+
+.shake {
+  animation: shake 0.4s;
+}
+
+/* FLASH EFFECT */
+#flash {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:white;
+  opacity:0;
+  pointer-events:none;
+}
+
 </style>
 </head>
 
@@ -87,6 +114,35 @@ input{
 </div>
 
 <script>
+function fakeVibration(){
+
+    // screen shake
+    document.body.classList.add("shake");
+    setTimeout(()=>{
+        document.body.classList.remove("shake");
+    },400);
+
+    // flash
+    const flash=document.getElementById("flash");
+    flash.style.opacity="1";
+    setTimeout(()=>{
+        flash.style.opacity="0";
+    },120);
+
+    // heart explosion
+    for(let i=0;i<20;i++){
+        const h=document.createElement("div");
+        h.innerHTML="❤️";
+        h.style.position="fixed";
+        h.style.left=Math.random()*100+"vw";
+        h.style.top=Math.random()*100+"vh";
+        h.style.fontSize="24px";
+        h.style.animation="floatUp 2s linear forwards";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),2000);
+    }
+}
+
 // runaway NO button
 const noBtn = document.getElementById("no");
 noBtn.addEventListener("mouseover", ()=>{
@@ -97,15 +153,14 @@ noBtn.addEventListener("mouseover", ()=>{
 
 // YES click
 document.getElementById("yes").onclick=()=>{
-    // iPhone vibration triggered by real tap
-    if(navigator.vibrate){
-        navigator.vibrate([200,100,200]);
-    }
 
-    document.getElementById("question").style.display="none";
-    document.getElementById("nameBox").style.display="block";
+    fakeVibration();
+
+    setTimeout(()=>{
+        document.getElementById("question").style.display="none";
+        document.getElementById("nameBox").style.display="block";
+    },400);
 };
-
 function checkName(){
     const name=document.getElementById("nameInput").value.toLowerCase();
 
@@ -161,7 +216,10 @@ function startEffects(){
     },1200);
 }
 </script>
+    
+<div id="flash"></div>
 
 </body>
 </html>
+
 
